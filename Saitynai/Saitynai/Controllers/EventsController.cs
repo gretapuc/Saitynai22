@@ -1,18 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Saitynai.Auth.Model;
 using Saitynai.Data.Dtos.Events;
 using Saitynai.Data.Entities;
 using Saitynai.Data.Repositories;
+using System.Data;
+using System.Security.Claims;
 
 namespace Saitynai.Controllers
 {
     [ApiController]
+
     [Route("api/events")]
     public class EventsController : ControllerBase
     {
         private readonly IEventsRepository _eventsRepository;
-        public EventsController(IEventsRepository eventsRepository)
+        private readonly IAuthorizationService _authorizationService;
+        public EventsController(IEventsRepository eventsRepository, IAuthorizationService authorizationService)
         {
             _eventsRepository = eventsRepository;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
@@ -36,9 +44,10 @@ namespace Saitynai.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = IsmRoles.Admin)]
         public async Task<ActionResult<EventDto>> Create(CreateEventDto createEventDto)
         {
-            var eventmodel = new Event { Name = createEventDto.Name, Date = createEventDto.Date, Description = createEventDto.Description };
+            var eventmodel = new Event { Name = createEventDto.Name, Date = createEventDto.Date, Description = createEventDto.Description, UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)};
 
             await _eventsRepository.CreateAsync(eventmodel);
 
@@ -47,12 +56,20 @@ namespace Saitynai.Controllers
 
         [HttpPut]
         [Route("{eventId}")]
+        [Authorize(Roles = IsmRoles.Admin)]
         public async Task<ActionResult<EventDto>> Update(int eventId, UpdateEventDto updateEventDto)
         {
             var eventmodel = await _eventsRepository.GetAsync(eventId);
 
             if (eventmodel == null)
                 return NotFound();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, eventmodel, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded)
+            {
+                // 404
+                return Forbid();
+            }
 
             eventmodel.Name = updateEventDto.Name;
             eventmodel.Date = updateEventDto.Date; 
@@ -66,12 +83,20 @@ namespace Saitynai.Controllers
 
         [HttpDelete]
         [Route("{eventId}")]
+        [Authorize(Roles = IsmRoles.Admin)]
         public async Task<ActionResult> Remove(int eventId)
         {
             var eventmodel = await _eventsRepository.GetAsync(eventId);
 
             if (eventmodel == null)
                 return NotFound();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, eventmodel, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded)
+            {
+                // 404
+                return Forbid();
+            }
 
             await _eventsRepository.DeleteAsync(eventmodel);
 

@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Saitynai.Auth.Model;
 using Saitynai.Data.Dtos.Competitions;
 using Saitynai.Data.Dtos.Events;
 using Saitynai.Data.Entities;
 using Saitynai.Data.Repositories;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Saitynai.Controllers
 {
@@ -12,18 +16,20 @@ namespace Saitynai.Controllers
     {
         private readonly ICompetitionsRepository _competitionsRepository;
         private readonly IEventsRepository _eventsRepository;
-        public CompetitionsController(ICompetitionsRepository competitionsRepository, IEventsRepository eventsRepository)
+        private readonly IAuthorizationService _authorizationService;
+        public CompetitionsController(ICompetitionsRepository competitionsRepository, IEventsRepository eventsRepository, IAuthorizationService authorizationService)
         {
             _competitionsRepository = competitionsRepository;
             _eventsRepository = eventsRepository;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
         public async Task<IEnumerable<CompetitionDto>> GetMany(int eventId)
         {
-            var events = await _competitionsRepository.GetManyAsync(eventId);
+            var competitions = await _competitionsRepository.GetManyAsync(eventId);
 
-            return events.Select(o => new CompetitionDto(o.Id, o.Name, o.Description, o.Rules));
+            return competitions.Select(o => new CompetitionDto(o.Id, o.Name, o.Description, o.Rules));
         }
 
         [HttpGet]
@@ -44,6 +50,7 @@ namespace Saitynai.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = IsmRoles.Admin)]
         public async Task<ActionResult<CompetitionDto>> Create(int eventId, CreateCompetitionDto createCompetitionDto)
         {
             var eventmodel = await _eventsRepository.GetAsync(eventId);
@@ -51,7 +58,7 @@ namespace Saitynai.Controllers
             if (eventmodel == null)
                 return NotFound();
 
-            var competition = new Competition { Name = createCompetitionDto.Name, Description = createCompetitionDto.Description, Rules = createCompetitionDto.Rules, Event = eventmodel };
+            var competition = new Competition { Name = createCompetitionDto.Name, Description = createCompetitionDto.Description, Rules = createCompetitionDto.Rules, Event = eventmodel, UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub)};
 
             await _competitionsRepository.CreateAsync(competition);
 
@@ -60,6 +67,7 @@ namespace Saitynai.Controllers
 
         [HttpPut]
         [Route("{competitionId}")]
+        [Authorize(Roles = IsmRoles.Admin)]
         public async Task<ActionResult<CompetitionDto>> Update(int eventId, int competitionId, UpdateCompetitionDto updateCompetitionDto)
         {
             var eventmodel = await _eventsRepository.GetAsync(eventId);
@@ -71,6 +79,13 @@ namespace Saitynai.Controllers
 
             if (competition == null)
                 return NotFound();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, competition, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded)
+            {
+                // 404
+                return Forbid();
+            }
 
             competition.Name = updateCompetitionDto.Name;
             competition.Description = updateCompetitionDto.Description;
@@ -84,6 +99,7 @@ namespace Saitynai.Controllers
 
         [HttpDelete]
         [Route("{competitionId}")]
+        [Authorize(Roles = IsmRoles.Admin)]
         public async Task<ActionResult> Remove(int eventId, int competitionId)
         {
             var eventmodel = await _eventsRepository.GetAsync(eventId);
@@ -95,6 +111,13 @@ namespace Saitynai.Controllers
 
             if (competition == null)
                 return NotFound();
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, competition, PolicyNames.ResourceOwner);
+            if (!authorizationResult.Succeeded)
+            {
+                // 404
+                return Forbid();
+            }
 
             await _competitionsRepository.DeleteAsync(competition);
 

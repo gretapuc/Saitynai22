@@ -1,4 +1,7 @@
-﻿namespace Saitynai.Data.Entities
+﻿using Saitynai.Auth.Model;
+using System.ComponentModel.DataAnnotations;
+
+namespace Saitynai.Data.Entities
 {
     public class Competition
     {
@@ -8,5 +11,10 @@
         public string Rules { get; set; }
 
         public Event Event { get; set; }
+
+        [Required]
+        public string UserId { get; set; }
+
+        public IsmRestUser User { get; set; }
     }
 }

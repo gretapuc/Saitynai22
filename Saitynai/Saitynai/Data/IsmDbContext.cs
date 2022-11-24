@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Saitynai.Auth.Model;
 using Saitynai.Data.Entities;
 
 namespace Saitynai.Data
 {
-    public class IsmDbContext : DbContext
+    public class IsmDbContext : IdentityDbContext<IsmRestUser>
     {
         public DbSet<Event> Events { get; set; }
         public DbSet<Competition> Competitions { get; set; }

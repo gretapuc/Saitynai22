@@ -31,3 +31,16 @@ C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Sait
 C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\Saitynai\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\Saitynai\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.Design.dll
 C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\Saitynai\obj\Debug\net6.0\Saitynai.csproj.CopyComplete
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\greta\Desktop\T120B165 Saityno taikomųjų programų projektavimas\Saitynai22\Saitynai\saitynai\bin\Debug\net6.0\System.Security.Permissions.dll
