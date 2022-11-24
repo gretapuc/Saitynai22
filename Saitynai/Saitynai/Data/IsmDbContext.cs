@@ -10,10 +10,13 @@ namespace Saitynai.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<Registration> Registrations { get; set; }
+        private readonly IConfiguration _configuration;
 
+        public IsmDbContext(IConfiguration configuration) =>
+            _configuration = configuration;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = "server=localhost;user=root;password=password;database=ISM";
+            var connectionString = _configuration.GetValue<string>("ISMConnectionString");
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
 
