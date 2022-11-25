@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Saitynai.Auth.Model;
 using Saitynai.Data.Dtos.Competitions;
 using Saitynai.Data.Dtos.Events;
@@ -38,8 +39,18 @@ namespace Saitynai.Controllers
 
         [HttpGet]
         [Authorize(Roles = IsmRoles.IsmUser)]
-        public async Task<IEnumerable<RegistrationDto>> GetMany(int competitionId)
+        public async Task<ActionResult<IEnumerable<RegistrationDto>>> GetMany(int eventId, int competitionId)
         {
+            var eventmodel = await _eventsRepository.GetAsync(eventId);
+
+            if (eventmodel == null)
+                return NotFound();
+
+            var competitions = await _eventsRepository.GetAsync(competitionId);
+
+            if (competitions == null)
+                return NotFound();
+
             var registrations = await _registrationsRepository.GetManyAsync(competitionId);
 
             var result = new List<RegistrationDto>();
@@ -54,7 +65,7 @@ namespace Saitynai.Controllers
                 }
             }
 
-            return result;
+            return Ok(result);
         }
 
 
