@@ -80,13 +80,6 @@ namespace Saitynai.Controllers
             if (competition == null)
                 return NotFound();
 
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, competition, PolicyNames.ResourceOwner);
-            if (!authorizationResult.Succeeded)
-            {
-                // 404
-                return Forbid();
-            }
-
             competition.Name = updateCompetitionDto.Name;
             competition.Description = updateCompetitionDto.Description;
             competition.Rules = updateCompetitionDto.Rules;
@@ -111,13 +104,6 @@ namespace Saitynai.Controllers
 
             if (competition == null)
                 return NotFound();
-
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, competition, PolicyNames.ResourceOwner);
-            if (!authorizationResult.Succeeded)
-            {
-                // 404
-                return Forbid();
-            }
 
             await _competitionsRepository.DeleteAsync(competition);
 

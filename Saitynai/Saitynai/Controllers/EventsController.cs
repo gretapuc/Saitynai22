@@ -64,13 +64,6 @@ namespace Saitynai.Controllers
             if (eventmodel == null)
                 return NotFound();
 
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, eventmodel, PolicyNames.ResourceOwner);
-            if (!authorizationResult.Succeeded)
-            {
-                // 404
-                return Forbid();
-            }
-
             eventmodel.Name = updateEventDto.Name;
             eventmodel.Date = updateEventDto.Date; 
             eventmodel.Description = updateEventDto.Description;
@@ -90,13 +83,6 @@ namespace Saitynai.Controllers
 
             if (eventmodel == null)
                 return NotFound();
-
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, eventmodel, PolicyNames.ResourceOwner);
-            if (!authorizationResult.Succeeded)
-            {
-                // 404
-                return Forbid();
-            }
 
             await _eventsRepository.DeleteAsync(eventmodel);
 
