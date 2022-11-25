@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Saitynai.Data.Entities
 {
-    public class Competition
+    public class Competition : IUserOwnedResource
     {
         public int Id { get; set; }
         public string Name { get; set; }
