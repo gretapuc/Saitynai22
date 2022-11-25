@@ -46,7 +46,7 @@ namespace Saitynai.Controllers
             if (eventmodel == null)
                 return NotFound();
 
-            var competitions = await _eventsRepository.GetAsync(competitionId);
+            var competitions = await _competitionsRepository.GetAsync(eventId, competitionId);
 
             if (competitions == null)
                 return NotFound();
