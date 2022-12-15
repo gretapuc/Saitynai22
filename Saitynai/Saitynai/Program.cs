@@ -55,6 +55,7 @@ app.UseRouting();
 app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<IsmDbContext>();

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "vtkPckQe3DzMNfzNX9g7Q2+eAy0iWhoM8qPWo8MCR79MqZW/l8HV9uzjaty6eN9kvKmQCBb193iF0BowWuGv4g==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\greta\\Desktop\\T120B178 Informacinių sistemų kūrimas karkasais\\example-react\\example-react\\frontend\\frontend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\greta\\.nuget\\packages\\microsoft.aspnetcore.spaproxy\\6.0.9\\microsoft.aspnetcore.spaproxy.6.0.9.nupkg.sha512",
+    "C:\\Users\\greta\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.0\\microsoft.visualstudio.azure.containers.tools.targets.1.17.0.nupkg.sha512"
+  ],
+  "logs": []
+}
