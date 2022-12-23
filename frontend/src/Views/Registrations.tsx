@@ -1,5 +1,6 @@
 import backend from "app/backend";
 import { Competition } from "models/competitions";
+import { RegistrationModel } from "models/registration";
 import { Dialog } from "primereact/dialog";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
@@ -11,8 +12,8 @@ class State {
 	isLoaded : boolean = false;
 	isLoading : boolean = true;
     isDialogVisible: boolean = false;
-	competitions: Competition[] | null = null;
-    deletedCompetition: Competition | null = null;
+	registrations: RegistrationModel[] | null = null;
+    deletedRegistration: RegistrationModel | null = null;
 	/**
 	 * Makes a shallow clone. Use this to return new state instance from state updates.
 	 * @returns A shallow clone of this instance.
@@ -22,7 +23,7 @@ class State {
 	}
 }
 
-function Competitions() {
+function Registrations() {
     const [state, setState] = useState(new State());
     const locationParams = useParams();
     const navigate = useNavigate();
@@ -40,21 +41,21 @@ function Competitions() {
     }
 
     let onContestantsView = (id : number) => {
-        navigate(`./${id}/Registracijos`);
+        navigate(`./${id}`);
         }
 
         
-    let onDelete = (competitions: Competition) => {
+    let onDelete = (registration: RegistrationModel) => {
         update(() => {
             //send delete request to backend
-            state.deletedCompetition = competitions;
+            state.deletedRegistration = registration;
             state.isDialogVisible = true;
         });
         }
     let onConfirmedDelete = (id: number) => {
         update(() => {
             //send delete request to backend
-            const link = "http://localhost:5226/api/events/" + locationParams["eventId"] + "/competitions/" + id;
+            const link = "http://localhost:5226/api/events/" + locationParams["eventId"] + "/competitions/" + locationParams["competitionId"] + "/registrations/" + id;
             backend.delete(link)
             //success
             .then(resp => {
@@ -82,12 +83,12 @@ function Competitions() {
    }
 
    if( !state.isInitialized || location.state === "refresh") {
-       backend.get<Competition[]>("http://localhost:5226/api/events/" + locationParams["eventId"] + "/competitions/")
+       backend.get<RegistrationModel[]>("http://localhost:5226/api/events/" + locationParams["eventId"] + "/competitions/" + locationParams["competitionId"] + "/registrations/")
        .then(resp => {
            update(state =>{
                state.isLoading = false;
                state.isLoaded = true;
-               state.competitions = resp.data;
+               state.registrations = resp.data;
            })
        });
 
@@ -103,35 +104,34 @@ function Competitions() {
    let html =
     <div className="content">
 				{state.isLoaded && <>
-				<h2>Rungtys</h2>
-                {/* <button
+				<h2>Dalyviai</h2>
+                <button
 					type="button"
 					className="btn btn-primary mx-1"
 					onClick={() => navigate("./Kurti/")}
-					><i className="fa-solid"></i> Kurti naują rungtį</button> */}
-                    {state.competitions?.map(competition => 
+					><i className="fa-solid"></i> Registruoti dalyvį</button>
+                    {state.registrations?.map(registration => 
                         <div>
                             <Card
                             bg="light"
                             text="dark"
-                            onClick={() => onContestantsView(competition.id)}
                             >
                                 <Card.Body>
                                     <Card.Title>
-                                        {competition.name}
+                                        {registration.carNo}
                                     </Card.Title>
                                     <Card.Text>
-                                        Aprašymas: {competition.description}
+                                        Markė: {registration.manufacturer}
                                     </Card.Text>
                                     <Card.Text>
-                                        Taisyklės: {competition.rules}
+                                        Modelis: {registration.model}
                                     </Card.Text>
-                                    {/* <Button 
+                                    <Button 
                                     variant="primary"
-                                    onClick={() => onEdit(competition.id)}>Redaguoti</Button>
+                                    onClick={() => onEdit(registration.id)}>Redaguoti</Button>
                                     <Button 
                                     variant="danger"
-                                    onClick={() => onDelete(competition)}>Trinti</Button> */}
+                                    onClick={() => onDelete(registration)}>Trinti</Button>
                                 </Card.Body>
                             </Card>
                             
@@ -144,11 +144,11 @@ function Competitions() {
                         style={{width: "50ch"}}
                         >
                             <div>
-                                <h3>{state.deletedCompetition?.name}</h3>                                        
+                                <h3>{state.deletedRegistration?.carNo}</h3>                                        
                             </div>
                             <Button 
                             variant="danger"
-                            onClick={() => onConfirmedDelete(state.deletedCompetition?.id ?? -1)}>Trinti</Button>
+                            onClick={() => onConfirmedDelete(state.deletedRegistration?.id ?? -1)}>Trinti</Button>
                             <button
                             type="button"
                             className="btn btn-primary"
@@ -161,4 +161,4 @@ function Competitions() {
         return html;
 }
 
-export default Competitions;
+export default Registrations;
